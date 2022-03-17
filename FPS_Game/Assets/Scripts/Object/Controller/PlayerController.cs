@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header("Input KeyCodes")]
     public KeyCode keyCodeRun = KeyCode.LeftShift;  // 달리기 키
     public KeyCode keyCodeJump = KeyCode.Space;     // 점프 키
+    public KeyCode keyCodeReload = KeyCode.R;       // 탄 재장전 키
 
     [Header("Audio Clips")]
     public AudioClip audioClipWalk;                 // 걷기 사운드
@@ -119,6 +120,12 @@ public class PlayerController : MonoBehaviour
         {
             // 공격 종료
             weapon.StopWeaponAction();
+        }
+        // R 버튼을 눌렀을 때
+        else if(Input.GetKeyDown(keyCodeReload))
+        {
+            // 장전
+            weapon.StartReload();
         }
     }
 }
