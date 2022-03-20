@@ -12,6 +12,13 @@ public class PlayerAnim : MonoBehaviour
         set => animator.SetFloat("movementSpeed", value);
     }
 
+    // Assault Rifle 마우스 오른쪽 클릭 액션 (default/aim mode)
+    public bool AimModeIs
+    {
+        get => animator.GetBool("isAimMode");
+        set => animator.SetBool("isAimMode", value);
+    }
+
     private void Awake()
     {
         // "Player" 오브젝트 기준으로 자식 오브젝트인

@@ -14,8 +14,8 @@ public class Casing : MonoBehaviour
 
     public void Setup(MemoryPool pool, Vector3 direction)
     {
-        rigidbody3D = GetComponent<Rigidbody>();
-        audioSource = GetComponent<AudioSource>();
+        rigidbody3D = GetComponent<Rigidbody>();    // Rigidbody 컴포넌트를 가져온다
+        audioSource = GetComponent<AudioSource>();  // AudioSource 컴포넌트를 가져온다
         memoryPool = pool;
 
         // 탄피의 이동 속력과 회전 속력 설정

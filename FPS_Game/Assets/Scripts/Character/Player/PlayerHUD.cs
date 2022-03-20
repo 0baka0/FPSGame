@@ -8,13 +8,14 @@ public class PlayerHUD : MonoBehaviour
 {
     [Header("Components")]
     public WeaponAssaultRifle weapon;       // 현재 정보가 출력되는 무시
-                                            
-    [Header("Weapon Base")]                 
+    public Status status;                   // 플리이어의 상태 (이동속도, 체력)
+
+    [Header("Weapon Base")]
     public TextMeshProUGUI textWeaponName;  // 무기 이름
     public Image imageWeaponIcon;           // 무기 아이콘
     public Sprite[] spriteWeaponIcons;      // 무기 아이콘에 사용되는 sprite 배열
-                                            
-    [Header("Ammo")]                        
+
+    [Header("Ammo")]
     public TextMeshProUGUI textAmmo;        // 현재/최대 탄 수 출력 Text
 
     [Header("Magazine")]
@@ -22,6 +23,11 @@ public class PlayerHUD : MonoBehaviour
     public Transform magazineParent;        // 탄창 UI가 배치되는 Panel
 
     private List<GameObject> magazineList;  // 탄창 UI 리스트
+
+    [Header("HP & blooed")]
+    public TextMeshProUGUI textHP;              // 플레이어의 체력을 출력하는 Text
+    public Image imageBloodScreen;              // 플레이어가 공격받았을 때 화면에 효ㅈ시죄는 
+    public AnimationCurve curveBloodScreen;
 
     private void Awake()
     {
@@ -32,6 +38,7 @@ public class PlayerHUD : MonoBehaviour
         // Invoke() 메소드가 호출될 때 등록된 메소드(매개변수)가 실행된다
         weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
         weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
+        status.onHPEvent.AddListener(UpdateHPHUD);
     }
 
     private void SetupWeapon()
@@ -81,5 +88,30 @@ public class PlayerHUD : MonoBehaviour
         }
     }
 
+    private void UpdateHPHUD(int previous, int current)
+    {
+        textHP.text = "HP " + current;
 
+        if (previous - current > 0)
+        {
+            StopCoroutine("OnBloodScreen");
+            StartCoroutine("OnBloodScreen");
+        }
+    }
+
+    private IEnumerator OnBloodScreen()
+    {
+        float percent = 0;
+
+        while (percent < 1)
+        {
+            percent += Time.deltaTime;
+
+            Color color = imageBloodScreen.color;
+            color.a = Mathf.Lerp(1, 0, curveBloodScreen.Evaluate(percent));
+            imageBloodScreen.color = color;
+
+            yield return null;
+        }
+    }
 }

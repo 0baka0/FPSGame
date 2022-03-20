@@ -26,14 +26,14 @@ public class PlayerController : MonoBehaviour
         Cursor.visible      = false;
         Cursor.lockState    = CursorLockMode.Locked;
 
-        rotateToMouse = GetComponent<RotateToMouse>();  // RotateToMouse스크립트 컴포넌트를 가져온다.
-        movement = GetComponent<PlayerMovement>();      // PlayerMovement스크립트 컴포넌트를 가져온다.
-        status = GetComponent<Status>();                // Status스크립트 컴포넌트를 가져온다.
-        animator = GetComponent<PlayerAnim>();          // PlayerAnim스크립트 컴포넌트를 가져온다.
-        audioSource = GetComponent<AudioSource>();      // AudioSource 컴포넌트를 가져온다.
+        rotateToMouse = GetComponent<RotateToMouse>();  // RotateToMouse스크립트 컴포넌트를 가져온다
+        movement = GetComponent<PlayerMovement>();      // PlayerMovement스크립트 컴포넌트를 가져온다
+        status = GetComponent<Status>();                // Status스크립트 컴포넌트를 가져온다
+        animator = GetComponent<PlayerAnim>();          // PlayerAnim스크립트 컴포넌트를 가져온다
+        audioSource = GetComponent<AudioSource>();      // AudioSource 컴포넌트를 가져온다
         // "Player" 오브젝트 기준으로 자식 오브젝트인
         // "arms_assault-rifle_01" 오브젝트에 Animator 컴포넌트가 있으니
-        // GetComponent 아닌 GetComponentInChildren를 사용한다.
+        // GetComponent 아닌 GetComponentInChildren를 사용한다
         weapon = GetComponentInChildren<WeaponAssaultRifle>();
     }
 
@@ -121,11 +121,35 @@ public class PlayerController : MonoBehaviour
             // 공격 종료
             weapon.StopWeaponAction();
         }
+
+        // 마우스 오른쪽 버튼을 눌렀을 때
+        if(Input.GetMouseButtonDown(1))
+        {
+            // 모드 전환
+            weapon.StartWeaponAction(1);
+        }
+        // 마우스 오른쪽 버튼을 뗐을 때
+        else if(Input.GetMouseButtonUp(1))
+        {
+            // 별다른 호출은 없음
+            weapon.StopWeaponAction(1);
+        }
+
         // R 버튼을 눌렀을 때
-        else if(Input.GetKeyDown(keyCodeReload))
+        if(Input.GetKeyDown(keyCodeReload))
         {
             // 장전
             weapon.StartReload();
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        bool isDie = status.DecreaseHP(damage);
+
+        if(isDie == true)
+        {
+            Debug.Log("게임 종료");
         }
     }
 }
